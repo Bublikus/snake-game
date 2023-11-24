@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { InputHandler } from "./InputHandler";
+import {trackGameStart} from './firebase';
 
 // Types
 
@@ -10,8 +11,17 @@ type CellSymbol = (typeof SYMBOLS)[keyof typeof SYMBOLS];
 type Cell = { symbol: CellSymbol };
 type Row = Cell[];
 type Matrix = Row[];
-type Config = { areaSize?: Size; snakeSize?: number; tickInterval?: number };
-type UseSnakeGame = (config?: Config) => { score: number; matrix: Matrix };
+type Config = {
+  areaSize?: Size;
+  snakeSize?: number;
+  tickInterval?: number;
+  onGameEnd?: (food: number) => void;
+};
+type UseSnakeGame = (config?: Config) => {
+  score: number;
+  matrix: Matrix;
+  restart: () => void;
+};
 
 // Constants
 
@@ -35,12 +45,14 @@ let score: number = 0;
 let point: Coords | undefined = undefined;
 let pause: boolean = false;
 let time: number = 0;
+let isGameStarted: boolean = false;
 
 // Hooks
 
 export const useSnakeGame: UseSnakeGame = (config = {}) => {
   const areaSize = config.areaSize ?? DEFAULT_AREA_SIZE;
   const snakeSize = config.snakeSize ?? DEFAULT_SNAKE_SIZE;
+  const onGameEnd = config.onGameEnd ?? (() => {});
   const tickInterval = config.tickInterval ?? DEFAULT_TICK_INTERVAL;
 
   const prevMatrixRef = useRef<Matrix>();
@@ -56,11 +68,10 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
     checkIsAtePoint(areaSize);
     const isEnd = checkIsEndGame(snake, areaSize);
 
-    const emoji = [score >= 10 && "😎", "😳"].find(Boolean);
-
     if (isEnd) {
-      alert(`${emoji}\nYour score: ${score}`);
-      resetVariables();
+      if (isGameStarted) onGameEnd(score);
+      isGameStarted = false;
+      return;
     }
 
     const currMatrix = getMatrix(areaSize);
@@ -75,7 +86,7 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
   useGameLoop(tick, tickInterval);
   useKeydown();
 
-  return { score, matrix };
+  return { score, matrix, restart: resetVariables };
 };
 
 function useGameLoop(cb: Function, interval: number): void {
@@ -90,6 +101,10 @@ function useKeydown(): void {
     const actionHandler = (
       action: "up" | "down" | "left" | "right" | "pause"
     ) => {
+      if (!isGameStarted) trackGameStart();
+
+      isGameStarted = true;
+
       const canGoX = snake[0].x === snake[1].x;
       const canGoY = snake[0].y === snake[1].y;
       const canPause = deltaX || deltaY;
@@ -233,6 +248,7 @@ function checkIsEndGame(snake: Snake, areaSize: Size): boolean {
 }
 
 function resetVariables(): void {
+  isGameStarted = false;
   snake = [];
   deltaX = 0;
   deltaY = 0;
