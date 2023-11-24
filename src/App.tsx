@@ -72,6 +72,10 @@ export default function App() {
     restart();
   };
 
+  useEffect(() => {
+    getLeaderboard().then(setLeaders);
+  }, []);
+
   // Fun stuff
   // React.useEffect(() => {
   //   console.clear();
