@@ -69,8 +69,10 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
     const isEnd = checkIsEndGame(snake, areaSize);
 
     if (isEnd) {
-      if (isGameStarted) onGameEnd(score);
-      isGameStarted = false;
+      if (isGameStarted) {
+        isGameStarted = false;
+        onGameEnd(score);
+      }
       return;
     }
 
