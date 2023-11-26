@@ -27,7 +27,7 @@ export default function App() {
     onGameEnd: async (food: number) => {
       trackGameFinish(food);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       setIsShownLeaderboard(true);
 
