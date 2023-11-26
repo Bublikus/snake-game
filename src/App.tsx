@@ -69,6 +69,7 @@ export default function App() {
 
   const handleRestart = () => {
     setIsShownLeaderboard(false);
+    setOwnId("");
     restart();
   };
 
