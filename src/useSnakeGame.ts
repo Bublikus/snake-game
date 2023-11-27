@@ -105,11 +105,11 @@ function useKeydown(): void {
     ) => {
       if (!isGameStarted) trackGameStart();
 
-      isGameStarted = true;
-
       const canGoX = snake[0].x === snake[1].x;
       const canGoY = snake[0].y === snake[1].y;
-      const canPause = deltaX || deltaY;
+      const canPause = (deltaX || deltaY) && isGameStarted;
+
+      isGameStarted = true;
 
       const goUp = () => ((deltaY = -1), (deltaX = 0));
       const goDown = () => ((deltaY = 1), (deltaX = 0));

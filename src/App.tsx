@@ -36,7 +36,7 @@ export default function App() {
 
         while (true) {
           const player = prompt(
-            `🍗Food: ${food}\n\nEnter your name: `,
+            `🍗Food: ${food}\n👤Enter your name: `,
             defaultName.current ?? undefined
           );
 
