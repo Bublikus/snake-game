@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { InputHandler } from "./InputHandler";
-import {trackGameStart} from './firebase';
+import { trackGameStart } from "./firebase";
 
 // Types
 
@@ -46,6 +46,7 @@ let point: Coords | undefined = undefined;
 let pause: boolean = false;
 let time: number = 0;
 let isGameStarted: boolean = false;
+let isEndGame: boolean = false;
 
 // Hooks
 
@@ -59,7 +60,7 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
   const [matrix, setMatrix] = useState<Matrix>(getMatrix(areaSize));
 
   const tick = useCallback(() => {
-    if (pause) return;
+    if (pause || isEndGame) return;
     if (!snake.length) snake = createSnake(snakeSize, areaSize);
     if (!point) point = createPoint(areaSize);
 
@@ -69,10 +70,13 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
     const isEnd = checkIsEndGame(snake, areaSize);
 
     if (isEnd) {
+      isEndGame = true;
+
       if (isGameStarted) {
         isGameStarted = false;
         onGameEnd(score);
       }
+
       return;
     }
 
@@ -103,6 +107,8 @@ function useKeydown(): void {
     const actionHandler = (
       action: "up" | "down" | "left" | "right" | "pause"
     ) => {
+      if (!snake.length) return;
+
       if (!isGameStarted) trackGameStart();
 
       const canGoX = snake[0].x === snake[1].x;
@@ -251,6 +257,7 @@ function checkIsEndGame(snake: Snake, areaSize: Size): boolean {
 
 function resetVariables(): void {
   isGameStarted = false;
+  isEndGame = false;
   snake = [];
   deltaX = 0;
   deltaY = 0;
