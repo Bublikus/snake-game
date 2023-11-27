@@ -127,7 +127,7 @@ export default function App() {
         <header>
           <h1>Snake Game</h1>
           <h3>
-            Score: {score} {emoji}
+            🍗Food: {score} {emoji}
           </h3>
         </header>
 
