@@ -43,7 +43,7 @@ export default function App() {
 
         while (true) {
           const player = prompt(
-            `🍗Food: ${food}\n👤Enter your name: `,
+            `Food: 🍗${food}\n👤Enter your name: `,
             defaultName.current ?? undefined
           );
 
@@ -119,6 +119,18 @@ export default function App() {
     };
   }, []);
 
+  const getPrize = (i: number) => {
+    if (i === 0) {
+      return "🥇";
+    } else if (i === 1) {
+      return "🥈";
+    } else if (i === 2) {
+      return "🥉";
+    } else {
+      return "";
+    }
+  };
+
   return (
     <>
       {loading && <p className="loading">loading...</p>}
@@ -156,7 +168,7 @@ export default function App() {
         <header>
           <h1>Snake Game</h1>
           <h3>
-            🍗Food: {score}
+            Food: 🍗{score}
           </h3>
         </header>
 
@@ -185,9 +197,12 @@ export default function App() {
                       <td>
                         {leader.id === ownId ? "→ " : ""}
                         {i + 1}
+                        <span>
+                          {getPrize(i) || <span className="invisible">🥉</span>}
+                        </span>
                       </td>
                       <td>{leader.player.slice(0, 20).padEnd(20, ".")}</td>
-                      <td>{leader.food}</td>
+                      <td>🍗{leader.food}</td>
                     </tr>
                   ))}
                 </tbody>
