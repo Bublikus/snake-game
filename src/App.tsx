@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useSnakeGame } from "./useSnakeGame";
 // @ts-ignore
 import bgImg from "./bg.jpg";
@@ -28,51 +28,56 @@ export default function App() {
 
   const sortedLeaders = leaders.sort((a, b) => b.food - a.food).slice(0, 10);
 
-  const { matrix, score, restart } = useSnakeGame({
-    onGameEnd: async (food: number) => {
-      trackGameFinish(food);
+  const config = useMemo(
+    () => ({
+      onGameEnd: async (food: number) => {
+        trackGameFinish(food);
 
-      await new Promise((resolve) => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 200));
 
-      setIsShownLeaderboard(true);
+        setIsShownLeaderboard(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
-      const promptPlayer = () => {
-        let playerName;
+        const promptPlayer = () => {
+          let playerName;
 
-        while (true) {
-          const player = prompt(
-            `Food: 🍗${food}\n👤Enter your name: `,
-            defaultName.current ?? undefined
-          );
+          while (true) {
+            const player = prompt(
+              `Food: 🍗${food}\n👤Enter your name: `,
+              defaultName.current ?? undefined
+            );
 
-          playerName = player?.trim().slice(0, 50);
+            playerName = player?.trim().slice(0, 50);
 
-          if (playerName !== null && playerName !== "") break;
+            if (playerName !== null && playerName !== "") break;
+          }
+
+          return playerName;
+        };
+
+        if (food && !Number.isNaN(+food)) {
+          const playerName = promptPlayer();
+
+          if (playerName) {
+            const playerId = await addPayerToLeaderboard(playerName, food);
+
+            localStorage.setItem("playerName", playerName);
+            defaultName.current = playerName;
+
+            if (playerId) setOwnId(playerId);
+
+            trackSignGame(playerName, food);
+
+            await getLeaderboard().then(setLeaders);
+          }
         }
+      },
+    }),
+    []
+  );
 
-        return playerName;
-      };
-
-      if (food && !Number.isNaN(+food)) {
-        const playerName = promptPlayer();
-
-        if (playerName) {
-          const playerId = await addPayerToLeaderboard(playerName, food);
-
-          localStorage.setItem("playerName", playerName);
-          defaultName.current = playerName;
-
-          if (playerId) setOwnId(playerId);
-
-          trackSignGame(playerName, food);
-
-          await getLeaderboard().then(setLeaders);
-        }
-      }
-    },
-  });
+  const { matrix, score, restart } = useSnakeGame(config);
 
   const handleRestart = () => {
     setIsShownLeaderboard(false);
@@ -143,7 +148,7 @@ export default function App() {
         />
 
         {isShownInstructions && (
-          <div role="button" className="instruction" onTouchStart={() => setIsShownInstructions(false)}>
+          <div role="button" className="instruction" onClick={handleRestart}>
             <h2>How to play</h2>
 
             <div className="instruction__images">
@@ -167,9 +172,7 @@ export default function App() {
 
         <header>
           <h1>Snake Game</h1>
-          <h3>
-            Food: 🍗{score}
-          </h3>
+          <h3>Food: 🍗{score}</h3>
         </header>
 
         <section>
@@ -177,7 +180,11 @@ export default function App() {
         </section>
 
         {isShownLeaderboard && (
-          <div role="button" className="leaderboard" onTouchStart={handleRestart}>
+          <div
+            role="button"
+            className="leaderboard"
+            onTouchStart={handleRestart}
+          >
             <div className="leaderboard-box">
               <h3>Leaderboard</h3>
               <table>
