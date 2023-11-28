@@ -180,11 +180,7 @@ export default function App() {
         </section>
 
         {isShownLeaderboard && (
-          <div
-            role="button"
-            className="leaderboard"
-            onTouchStart={handleRestart}
-          >
+          <div role="button" className="leaderboard" onClick={handleRestart}>
             <div className="leaderboard-box">
               <h3>Leaderboard</h3>
               <table>
