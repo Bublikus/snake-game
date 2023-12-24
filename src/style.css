@@ -19,8 +19,8 @@ body {
   inset: 0;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   overflow: auto;
 }
 
@@ -47,7 +47,12 @@ header {
   padding-bottom: 20px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-size: 16px;
 }
 
@@ -73,7 +78,7 @@ header h3 {
 
 /* extra */
 body {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .bg {
@@ -111,7 +116,12 @@ main.loading {
 }
 
 footer {
-  padding-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
   padding-bottom: 100px;
   font-size: 16px;
 }
@@ -130,7 +140,7 @@ section {
   font-size: 26px;
   line-height: 1.1;
   white-space: pre;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   color: blue;
   background-color: lightgreen;
   border: 10px solid #333333;
@@ -159,132 +169,13 @@ kbd {
   white-space: nowrap;
 }
 
-/* leaderboard */
-
-.strong {
-  font-weight: bold;
-}
-
-.leaderboard {
-  position: absolute;
-  overflow: hidden;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(4px);
-  z-index: 9;
-  color: white;
-}
-
-.leaderboard-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border: 6px solid #333333;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: inset -4px -4px rgba(0, 0, 0, 0.25);
-}
-
-.leaderboard td {
-  font-size: 16px;
-  white-space: nowrap;
-}
-
-.leaderboard thead th {
-  border-bottom: 1px solid white;
-}
-
-.leaderboard tbody tr:first-child td {
-  padding-top: 10px;
-}
-
-.leaderboard h3 {
-  padding-bottom: 20px;
-}
-
-.leaderboard th:first-child,
-.leaderboard td:first-child {
-  text-align: right;
-  padding-right: 10px;
-  width: 20px;
-}
-
-.leaderboard th:last-child,
-.leaderboard td:last-child {
-  text-align: left;
-  padding-left: 10px;
-  width: 50px;
-}
-
-.leaderboard thead th {
-  padding-bottom: 10px;
-}
-
-/* leaderboard */
-
-/* instructions */
-
-.instruction {
-  position: absolute;
-  overflow: hidden;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(16px);
-  z-index: 9;
-  color: white;
-  font-size: 16px;
-}
-
-.instruction h2 {
-  font-size: 22px;
-  font-weight: 900;
-}
-
-.instruction .instruction__images {
-  display: flex;
-  gap: 16px;
-  padding: 50px 0 70px 0;
-}
-
-.instruction .instruction__image {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.instruction .instruction__image:first-child .instruction__image-title {
-  padding-right: 50px;
-}
-
-.instruction .instruction__image-title {
-  font-size: 14px;
-  font-weight: 700;
-  padding-bottom: 10px;
-  text-align: center;
-  width: min-content;
-  white-space: pre;
-}
-
-.instruction .instruction__image img {
-  width: auto;
-  height: 200px;
-}
-
-/* instructions */
-
 @media screen and (max-width: 374px) {
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-size: 14px;
   }
 
@@ -318,10 +209,6 @@ kbd {
     font-size: 14px;
   }
 
-  .leaderboard td {
-    font-size: 14px;
-  }
-
   footer {
     padding-top: 10px;
     padding-bottom: 0;
@@ -331,4 +218,3 @@ kbd {
     font-size: 13px;
   }
 }
-

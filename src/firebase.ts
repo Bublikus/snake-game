@@ -76,14 +76,14 @@ export async function addPayerToLeaderboard(player: string, food: number) {
 
 // Analytics
 
-export function trackGameStart() {
-  logEvent(analytics, "snake_game_start");
+export function trackGameRestart() {
+  logEvent(analytics, "snake_game_restart");
 }
 
 export function trackGameFinish(food: number) {
   logEvent(analytics, "snake_game_finish", { food });
 }
 
-export function trackSignGame(player: string, food: number) {
-  logEvent(analytics, "snake_sign_game", { player, food });
+export function trackSignGameFinish(food: number, player: string) {
+  logEvent(analytics, "snake_sign_game_finish", { player, food });
 }

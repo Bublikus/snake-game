@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-import { InputHandler } from "./InputHandler";
-import { trackGameStart } from "./firebase";
+import { InputHandler } from "./handlers/InputHandler";
 
 // Types
 
@@ -108,8 +107,6 @@ function useKeydown(): void {
       action: "up" | "down" | "left" | "right" | "pause"
     ) => {
       if (!snake.length) return;
-
-      if (!isGameStarted) trackGameStart();
 
       const canGoX = snake[0].x === snake[1].x;
       const canGoY = snake[0].y === snake[1].y;
