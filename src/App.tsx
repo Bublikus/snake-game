@@ -89,7 +89,7 @@ export default function App() {
 
   return (
     <GameContainer>
-      <Instructions open={isShownInstructions} onClose={handleRestart} />
+      <Instructions open={isShownInstructions} onClose={() => setIsShownInstructions(false)} />
 
       <header>
         <h1>Snake</h1>
@@ -102,10 +102,9 @@ export default function App() {
 
       <footer>
         {isTouch ? (
-          <h4>Tap to pause</h4>
+          <h4>Swipe</h4>
         ) : (
           <dl>
-            <kbd>Space</kbd>
             <span>
               <kbd>↑</kbd>
               <div>

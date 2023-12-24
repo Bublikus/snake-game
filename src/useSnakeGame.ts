@@ -95,10 +95,13 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
 };
 
 function useGameLoop(cb: Function, interval: number): void {
+  const tickRef = useRef<Function>(cb);
+  tickRef.current = cb;
+
   useEffect(() => {
-    const tickId = setInterval(cb, interval);
+    const tickId = setInterval(tickRef.current, interval);
     return () => clearInterval(tickId);
-  }, [cb, interval]);
+  }, [interval]);
 }
 
 function useKeydown(): void {
@@ -138,13 +141,13 @@ function useKeydown(): void {
       ArrowDown: () => actionHandler("down"),
       ArrowLeft: () => actionHandler("left"),
       ArrowRight: () => actionHandler("right"),
-      Space: () => actionHandler("pause"),
+      // Space: () => actionHandler("pause"),
 
       swipeUp: () => actionHandler("up"),
       swipeDown: () => actionHandler("down"),
       swipeLeft: () => actionHandler("left"),
       swipeRight: () => actionHandler("right"),
-      tap: () => actionHandler("pause"),
+      // tap: () => actionHandler("pause"),
     });
 
     return () => handler.destroy();
@@ -255,6 +258,7 @@ function checkIsEndGame(snake: Snake, areaSize: Size): boolean {
 function resetVariables(): void {
   isGameStarted = false;
   isEndGame = false;
+  pause = false;
   snake = [];
   deltaX = 0;
   deltaY = 0;
