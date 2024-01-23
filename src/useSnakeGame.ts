@@ -30,8 +30,8 @@ const SYMBOLS = {
   bottom: "▄",
 } as const;
 
-const DEFAULT_MAX_TICK_INTERVAL: number = 150;
-const DEFAULT_MIN_TICK_INTERVAL: number = 80;
+const DEFAULT_MAX_TICK_INTERVAL: number = 200;
+const DEFAULT_MIN_TICK_INTERVAL: number = 100;
 const DEFAULT_AREA_SIZE: Size = { x: 20, y: 20 };
 const DEFAULT_SNAKE_SIZE: number = 2;
 
