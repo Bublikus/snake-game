@@ -13,7 +13,6 @@ type Matrix = Row[];
 type Config = {
   areaSize?: Size;
   snakeSize?: number;
-  tickInterval?: number;
   onGameEnd?: (food: number) => void;
 };
 type UseSnakeGame = (config?: Config) => {
@@ -31,7 +30,8 @@ const SYMBOLS = {
   bottom: "▄",
 } as const;
 
-const DEFAULT_TICK_INTERVAL: number = 120;
+const DEFAULT_MAX_TICK_INTERVAL: number = 150;
+const DEFAULT_MIN_TICK_INTERVAL: number = 80;
 const DEFAULT_AREA_SIZE: Size = { x: 20, y: 20 };
 const DEFAULT_SNAKE_SIZE: number = 2;
 
@@ -46,6 +46,8 @@ let pause: boolean = false;
 let time: number = 0;
 let isGameStarted: boolean = false;
 let isEndGame: boolean = false;
+let tickInterval: number = DEFAULT_MAX_TICK_INTERVAL;
+let startTime: number = 0;
 
 // Hooks
 
@@ -53,7 +55,6 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
   const areaSize = config.areaSize ?? DEFAULT_AREA_SIZE;
   const snakeSize = config.snakeSize ?? DEFAULT_SNAKE_SIZE;
   const onGameEnd = config.onGameEnd ?? (() => {});
-  const tickInterval = config.tickInterval ?? DEFAULT_TICK_INTERVAL;
 
   const prevMatrixRef = useRef<Matrix>();
   const [matrix, setMatrix] = useState<Matrix>(getMatrix(areaSize));
@@ -62,6 +63,15 @@ export const useSnakeGame: UseSnakeGame = (config = {}) => {
     if (pause || isEndGame) return;
     if (!snake.length) snake = createSnake(snakeSize, areaSize);
     if (!point) point = createPoint(areaSize);
+
+    if ((deltaX || deltaY) && isGameStarted) {
+      if (!startTime) startTime = Date.now();
+      // reduce tick interval by 1ms every 2 seconds
+      if (Date.now() - startTime > 2000) {
+        startTime = Date.now();
+        tickInterval = Math.max(tickInterval - 1, DEFAULT_MIN_TICK_INTERVAL);
+      }
+    }
 
     snake = moveSnake(snake, areaSize);
 
@@ -292,6 +302,8 @@ function resetVariables(): void {
   score = 0;
   time = 0;
   point = undefined;
+  tickInterval = DEFAULT_MAX_TICK_INTERVAL;
+  startTime = 0;
 }
 
 // Utils
