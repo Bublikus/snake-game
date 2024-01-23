@@ -28,6 +28,7 @@ const defaultPlayer: Leader = {
 export default function App() {
   const isOverlay = useRef(false);
 
+  const [isEnd, setIsEnd] = useState(false);
   const [leaders, setLeaders] = useState<Leader[]>([]);
   const [player, setPlayer] = useState<Leader>(defaultPlayer);
   const [showPlayerModal, setShowPlayerModal] = useState(false);
@@ -40,6 +41,7 @@ export default function App() {
     () => ({
       onGameEnd: async (score: number) => {
         trackGameFinish(score);
+        setIsEnd(true);
         await new Promise((resolve) => setTimeout(resolve, 200));
         setIsShownLeaderboard(true);
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -63,6 +65,7 @@ export default function App() {
   };
 
   const handleRestart = () => {
+    setIsEnd(false);
     setIsShownLeaderboard(false);
     setIsShownInstructions(false);
     setPlayer(defaultPlayer);
@@ -102,7 +105,14 @@ export default function App() {
 
       <footer>
         {isTouch ? (
-          <h4>Swipe</h4>
+          <div className="controls">
+            <button type="button" id="control-up" disabled={isEnd}>↑</button>
+            <div className="controls-sides">
+              <button type="button" id="control-left" disabled={isEnd}>←</button>
+              <button type="button" id="control-right" disabled={isEnd}>→</button>
+            </div>
+            <button type="button" id="control-down" disabled={isEnd}>↓</button>
+          </div>
         ) : (
           <dl>
             <span>

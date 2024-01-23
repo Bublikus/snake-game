@@ -134,6 +134,21 @@ function useKeydown(): void {
       callback[action]?.();
     };
 
+    const controlUp = document.getElementById("control-up");
+    const controlDown = document.getElementById("control-down");
+    const controlLeft = document.getElementById("control-left");
+    const controlRight = document.getElementById("control-right");
+
+    const handleUp = () => actionHandler("up");
+    const handleDown = () => actionHandler("down");
+    const handleLeft = () => actionHandler("left");
+    const handleRight = () => actionHandler("right");
+
+    controlUp?.addEventListener("click", handleUp);
+    controlDown?.addEventListener("click", handleDown);
+    controlLeft?.addEventListener("click", handleLeft);
+    controlRight?.addEventListener("click", handleRight);
+
     const handler = new InputHandler({
       swipeTickThresholdPX: 10,
     }).handleActions({
@@ -147,16 +162,22 @@ function useKeydown(): void {
       KeyA: () => actionHandler("left"),
       KeyD: () => actionHandler("right"),
 
-      swipeUp: () => actionHandler("up"),
-      swipeDown: () => actionHandler("down"),
-      swipeLeft: () => actionHandler("left"),
-      swipeRight: () => actionHandler("right"),
+      // swipeUp: () => actionHandler("up"),
+      // swipeDown: () => actionHandler("down"),
+      // swipeLeft: () => actionHandler("left"),
+      // swipeRight: () => actionHandler("right"),
 
       // Space: () => actionHandler("pause"),
       // tap: () => actionHandler("pause"),
     });
 
-    return () => handler.destroy();
+    return () => {
+      handler.destroy();
+      controlUp?.removeEventListener("click", handleUp);
+      controlDown?.removeEventListener("click", handleDown);
+      controlLeft?.removeEventListener("click", handleLeft);
+      controlRight?.removeEventListener("click", handleRight);
+    }
   }, []);
 }
 
