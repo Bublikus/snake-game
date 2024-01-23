@@ -14,7 +14,7 @@ export const Instructions: React.FC<LeaderboardProps> = ({ open, onClose }) => {
       <div className="instruction__images">
         <div className="instruction__image">
           <span className="instruction__image-title">
-            Swipe{"\n"}to{"\n"}control
+            Arrows{"\n"}to{"\n"}control
           </span>
           <img src={swipeImg} alt="swipe" />
         </div>

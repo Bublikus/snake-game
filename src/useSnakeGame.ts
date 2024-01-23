@@ -144,10 +144,10 @@ function useKeydown(): void {
     const handleLeft = () => actionHandler("left");
     const handleRight = () => actionHandler("right");
 
-    controlUp?.addEventListener("click", handleUp);
-    controlDown?.addEventListener("click", handleDown);
-    controlLeft?.addEventListener("click", handleLeft);
-    controlRight?.addEventListener("click", handleRight);
+    controlUp?.addEventListener("touchstart", handleUp);
+    controlDown?.addEventListener("touchstart", handleDown);
+    controlLeft?.addEventListener("touchstart", handleLeft);
+    controlRight?.addEventListener("touchstart", handleRight);
 
     const handler = new InputHandler({
       swipeTickThresholdPX: 10,
@@ -173,10 +173,10 @@ function useKeydown(): void {
 
     return () => {
       handler.destroy();
-      controlUp?.removeEventListener("click", handleUp);
-      controlDown?.removeEventListener("click", handleDown);
-      controlLeft?.removeEventListener("click", handleLeft);
-      controlRight?.removeEventListener("click", handleRight);
+      controlUp?.removeEventListener("touchstart", handleUp);
+      controlDown?.removeEventListener("touchstart", handleDown);
+      controlLeft?.removeEventListener("touchstart", handleLeft);
+      controlRight?.removeEventListener("touchstart", handleRight);
     }
   }, []);
 }
