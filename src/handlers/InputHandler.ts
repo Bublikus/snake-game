@@ -227,7 +227,11 @@ type DesktopActionKeys =
   | "Space"
   | "Enter"
   | "Escape"
-  | "Tab";
+  | "Tab"
+  | "KeyW"
+  | "KeyS"
+  | "KeyA"
+  | "KeyD";
 
 export type DesktopInputHandlerActions = Partial<
   Record<DesktopActionKeys, (e: KeyboardEvent | MouseEvent) => void>

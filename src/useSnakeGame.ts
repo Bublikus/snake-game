@@ -141,12 +141,18 @@ function useKeydown(): void {
       ArrowDown: () => actionHandler("down"),
       ArrowLeft: () => actionHandler("left"),
       ArrowRight: () => actionHandler("right"),
-      // Space: () => actionHandler("pause"),
+
+      KeyW: () => actionHandler("up"),
+      KeyS: () => actionHandler("down"),
+      KeyA: () => actionHandler("left"),
+      KeyD: () => actionHandler("right"),
 
       swipeUp: () => actionHandler("up"),
       swipeDown: () => actionHandler("down"),
       swipeLeft: () => actionHandler("left"),
       swipeRight: () => actionHandler("right"),
+
+      // Space: () => actionHandler("pause"),
       // tap: () => actionHandler("pause"),
     });
 
