@@ -1,6 +1,6 @@
 {
-  "name": "Snake-game",
-  "short_name": "Snake-game",
+  "name": "Snake Game",
+  "short_name": "Snake",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#0090FF",
   "background_color": "#ffffff",
   "display": "fullscreen"
 }
